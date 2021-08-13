@@ -66,6 +66,27 @@ export class ParkingLot extends Component{
             alert('Failed');
         })
     }
+    updateClick(){
+        fetch(variables.API_URL+'parkingslot/spaces'+'/'+this.state.id,
+        {
+            method:'PUT',
+            headers:{
+                'Accept':'application/json',
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify({
+                state: this.state.state,
+                type:this.state.type
+            })
+        })
+        .then(res=>res.json())
+        .then((result)=>{
+            alert(result);
+            this.refreshList();
+        },(error)=>{
+            alert('Failed');
+        })
+    }
     render(){
         const{
             parkingSlots,
@@ -79,7 +100,7 @@ export class ParkingLot extends Component{
             <div>
                 <button type="button" className="btn btn-primary m-2 float-end"
                 data-bs-toggle="modal"
-                data-bs-target="#exampleModal2"
+                data-bs-target="#exampleModalPUT"
                 onClick={()=>this.addClick()}>
                     Add Parking Slot 
                 </button>
@@ -109,7 +130,7 @@ export class ParkingLot extends Component{
                                 <td>
                                     <button type="button" className="btn btn-light mr-1"
                                     data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal"
+                                    data-bs-target="#exampleModalPOST"
                                     onClick={()=>this.editClick(prk)}>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-pencil-square" viewBox="0 0 16 16">
                                     <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
@@ -127,7 +148,7 @@ export class ParkingLot extends Component{
                             )}
                     </tbody>
                 </table>
-                <div className="modal fade" id="exampleModal" tabIndex="-1" aria-hidden="true">
+                <div className="modal fade" id="exampleModalPOST" tabIndex="-1" aria-hidden="true">
                 <div className="modal-dialog modal-lg modal-dialog-centered">
                 <div className="modal-content">
                     <div className="modal-header">
@@ -152,13 +173,15 @@ export class ParkingLot extends Component{
                             <input type="text" className="form-control" value={type} onChange={this.changeType}/>
                         </div>
                         
-                        <button type="button" className="btn btn-primary float-start">Update</button>
+                        <button type="button" className="btn btn-primary float-start" onClick={()=>this.updateClick()}>
+                            Update
+                        </button>
 
                     </div>
                 </div>
                 </div>
                 </div>
-                <div className="modal fade" id="exampleModal2" tabIndex="-1" aria-hidden="true">
+                <div className="modal fade" id="exampleModalPUT" tabIndex="-1" aria-hidden="true">
                 <div className="modal-dialog modal-lg modal-dialog-centered">
                 <div className="modal-content">
                     <div className="modal-header">

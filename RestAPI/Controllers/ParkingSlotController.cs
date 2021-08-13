@@ -57,7 +57,7 @@ namespace RestAPI.Controllers
                 {
                     parkingSlots[i].state = space.state;
                     parkingSlots[i].type = space.type;
-                    return parkingSlots;
+                    return Ok("Successfully Updated!");
                 }
             }
             return NotFound();
@@ -80,7 +80,7 @@ namespace RestAPI.Controllers
                     }
                 }
             }
-            return parkingSlots;
+            return Ok("Successfully Disappeared from this planet!");
         }
 
     }
