@@ -80,7 +80,7 @@ namespace RestAPI.Controllers
                     }
                 }
             }
-            return Ok("Successfully Disappeared from this planet!");
+            return Ok("Disappeared from this planet!");
         }
 
     }
