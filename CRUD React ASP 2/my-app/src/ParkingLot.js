@@ -151,19 +151,9 @@ export class ParkingLot extends Component{
                             </span>
                             <input type="text" className="form-control" value={type} onChange={this.changeType}/>
                         </div>
-                        {id==""?
-                        <button type="button" 
-                        className="btn btn-primary float-start" onClick={()=>this.createClick()}>
-                            Create
-                        </button>
                         
-                        :null
-                        }
-                        {id!=""?
                         <button type="button" className="btn btn-primary float-start">Update</button>
-                        :null
 
-                        }
                     </div>
                 </div>
                 </div>
@@ -184,19 +174,13 @@ export class ParkingLot extends Component{
                             </span>
                             <input type="text" className="form-control" value={type} onChange={this.changeType}/>
                         </div>
-                        {id==""?
+                        
                         <button type="button" 
                         className="btn btn-primary float-start" onClick={()=>this.createClick()}>
                             Create
                         </button>
                         
-                        :null
-                        }
-                        {id!=""?
-                        <button type="button" className="btn btn-primary float-start">Update</button>
-                        :null
-
-                        }
+                        
                     </div>
                 </div>
                 </div>
