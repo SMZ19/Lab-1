@@ -33,7 +33,7 @@ namespace RestAPI.Controllers
                         DateTime now = DateTime.Now;
                         reservation.time = now.ToString("t");
                         reservations.Add(reservation);
-                        parkingSlots[i].state = "Ocupied";
+                        parkingSlots[i].state = "Occupied";
                         return Ok("Reserved!");
                     }
                 }
@@ -66,7 +66,7 @@ namespace RestAPI.Controllers
                    parkingSlots[i].state= "Free";
                 }
             }
-            return Ok(reservations);
+            return Ok("Deleted!");
         }
     }
 }
