@@ -8,19 +8,30 @@ export class Reservations extends Component{
             modalTitle:"",
             licensePlate:"",
             idSlotAssigned:"",
-            time:""
+            time:"",
+            actualPage : 0,
+            totalPages: 0
 
         }
+        
     }
-    refreshList(){
-        fetch(variables.API_URL+'reservations')
+    refreshList(page){
+        fetch(variables.API_URL+'reservations/page/' + page)
         .then(response=>response.json())
         .then(data=>{
             this.setState({reservationsList:data});
         });
     }
     componentDidMount(){
-        this.refreshList();
+        fetch(variables.API_URL+'reservations/pages/')
+        .then(response=>response.json())
+        .then(data=>{
+            this.setState({totalPages:data});
+            console.log(this.state.totalPages);
+        });
+        
+        this.refreshList(0);
+
     }
     changeLicensePlate=(e)=>{
         this.setState({licensePlate:e.target.value});
@@ -32,6 +43,31 @@ export class Reservations extends Component{
             idSlotAssigned: "",
             time:""
         })
+    }
+    paginaSiguienteClick(t,a){
+        console.log(a);
+
+        if(t-1>a){
+            this.refreshList(a + 1);
+         this.setState((state) => {
+        
+    return {actualPage: a + 1}
+
+  });
+
+        
+    }
+    }
+    paginaAnteriorClick(a){
+        console.log('Anterior');
+         console.log(a);
+        if(a>0){
+            this.refreshList(a-1);
+         this.setState((state) => {
+    return {actualPage: state.actualPage - 1}
+  });
+        
+    }
     }
     createClick(){
         fetch(variables.API_URL+'reservations',
@@ -79,7 +115,9 @@ export class Reservations extends Component{
             modalTitle,
             licensePlate,
             idSlotAssigned,
-            time
+            time,
+            actualPage,
+            totalPages
         }=this.state;
         return(
 
@@ -126,6 +164,26 @@ export class Reservations extends Component{
                             )}
                     </tbody>
                 </table>
+                  <table className ="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>
+                                <button type="button" className="btn btn-primary m-2 float-end"  disabled={actualPage == 0 } onClick={()=>this.paginaAnteriorClick(actualPage)}>Anterior</button>
+
+                            </th>
+                            <th>
+                             <button className="btn m-2 float-end">{actualPage+1} </button>
+                            </th>
+
+                            <th>
+                                <button type="button" className="btn btn-primary m-2 float-end"  disabled={actualPage == totalPages-1 } onClick={()=>this.paginaSiguienteClick(totalPages,actualPage)}>Siguiente</button>
+                            </th>
+
+                        </tr>
+                    </thead>
+                 
+                </table>
+     
                 <div className="modal fade" id="exampleModalPOST" tabIndex="-1" aria-hidden="true">
                 <div className="modal-dialog modal-lg modal-dialog-centered">
                 <div className="modal-content">

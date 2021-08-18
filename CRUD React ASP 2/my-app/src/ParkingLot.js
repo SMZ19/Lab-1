@@ -9,19 +9,51 @@ export class ParkingLot extends Component{
             modalTitle:"",
             id:"",
             state:"",
-            type:""
+            type:"",
+            actualPage:0,
+            totalPages:0
 
         }
     }
-    refreshList(){
-        fetch(variables.API_URL+'parkingslot/spaces')
+    refreshList(page){
+        fetch(variables.API_URL+'parkingslot/spaces/page/'+page+'?fields=state,id')
         .then(response=>response.json())
         .then(data=>{
             this.setState({parkingSlots:data});
         });
     }
     componentDidMount(){
-        this.refreshList();
+        fetch(variables.API_URL+'parkingslot/pages/')
+        .then(response=>response.json())
+        .then(data=>{
+            this.setState({totalPages:data});
+        });
+        this.refreshList(0);
+    }
+     paginaSiguienteClick(t,a){
+        console.log(a);
+
+        if(t-1>a){
+            this.refreshList(a + 1);
+         this.setState((state) => {
+        
+    return {actualPage: a + 1}
+
+  });
+
+        
+    }
+    }
+    paginaAnteriorClick(a){
+        console.log('Anterior');
+         console.log(a);
+        if(a>0){
+            this.refreshList(a-1);
+         this.setState((state) => {
+    return {actualPage: state.actualPage - 1}
+  });
+        
+    }
     }
     changeState=(e)=>{
         this.setState({state:e.target.value});
@@ -114,7 +146,9 @@ export class ParkingLot extends Component{
             modalTitle,
             id,
             state,
-            type
+            type,
+            actualPage,
+            totalPages
         }=this.state;
         return(
 
@@ -135,9 +169,6 @@ export class ParkingLot extends Component{
                                 State
                             </th>
                             <th>
-                                Type
-                            </th>
-                            <th>
                                 Options
                             </th>
                         </tr>
@@ -147,7 +178,6 @@ export class ParkingLot extends Component{
                             <tr key={prk.id}>
                                 <td>{prk.id}</td>
                                 <td>{prk.state}</td>
-                                <td>{prk.type}</td>
                                 <td>
                                     <button type="button" className="btn btn-light mr-1"
                                     data-bs-toggle="modal"
@@ -168,6 +198,20 @@ export class ParkingLot extends Component{
                                 </td>
                             </tr>
                             )}
+                        <tr>
+                            <td>
+                                <button type="button" className="btn btn-primary m-2 float-end"  disabled={actualPage == 0 } onClick={()=>this.paginaAnteriorClick(actualPage)}>Anterior</button>
+
+                            </td>
+                            <td>
+                             <button className="btn m-2 float-end">{actualPage+1} </button>
+                            </td>
+
+                            <td>
+                                <button type="button" className="btn btn-primary m-2 float-end"  disabled={actualPage == totalPages-1 } onClick={()=>this.paginaSiguienteClick(totalPages,actualPage)}>Siguiente</button>
+                            </td>
+
+                        </tr>
                     </tbody>
                 </table>
                 <div className="modal fade" id="exampleModalPUT" tabIndex="-1" aria-hidden="true">
